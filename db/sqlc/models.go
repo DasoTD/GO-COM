@@ -33,7 +33,7 @@ type Entry struct {
 type Product struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Price       string `json:"price"`
+	Price       int64  `json:"price"`
 }
 
 type Transfer struct {

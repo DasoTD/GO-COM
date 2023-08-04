@@ -1,6 +1,6 @@
 -- name: Createproduct :one
 INSERT INTO products(
-    price,
+    name,
     description,
     price
     ) VALUES (
