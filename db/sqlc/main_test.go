@@ -21,14 +21,8 @@ const (
 
 
 func TestMain(m *testing.M) {
-	// config, err := util.LoadConfig("../..")
-	// if err != nil {
-	// 	log.Fatal("cannot load config:", err)
-	// }
-	// DB_DRIVER=postgres
-	// DB_SOURCE=postgresql://root:secret@localhost:5432/test?sslmode=disable
-	
-	testDB, err := sql.Open(DB_DRIVER, DB_SOURCE)
+	var err error
+	testDB, err = sql.Open(DB_DRIVER, DB_SOURCE)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
