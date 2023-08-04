@@ -5,4 +5,3 @@ CREATE TABLE "carts" (
 );
 
 ALTER TABLE "carts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
--- ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");

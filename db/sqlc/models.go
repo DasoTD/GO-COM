@@ -30,6 +30,12 @@ type Entry struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type Product struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Price       string `json:"price"`
+}
+
 type Transfer struct {
 	ID            int64 `json:"id"`
 	FromAccountID int64 `json:"from_account_id"`
