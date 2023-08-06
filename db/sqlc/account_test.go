@@ -21,7 +21,7 @@ func createRandomAccount(t *testing.T) Account {
 		Currency: util.RandomCurrency(),
 	}
 
-	account, err := testQueries.CreateAccount(context.Background(), arg)
+	account, err := testBank.CreateAccount(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, account)
 
@@ -42,7 +42,7 @@ func TestCreateAccount(t *testing.T) {
 func TestGetAccount(t *testing.T) {
 	account := createRandomAccount(t)
 
-	account2, err := testQueries.GetAccount(context.Background(), account.ID)
+	account2, err := testBank.GetAccount(context.Background(), account.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
 	require.Equal(t, account.ID, account2.ID)
@@ -53,10 +53,10 @@ func TestGetAccount(t *testing.T) {
 
 func TestDeleteAccount(t *testing.T){
 	account := createRandomAccount(t)
-	err := testQueries.DeleteAccount(context.Background(), account.ID)
+	err := testBank.DeleteAccount(context.Background(), account.ID)
 	require.NoError(t, err)
 
-	accountz, err := testQueries.GetAccount(context.Background(), account.ID)
+	accountz, err := testBank.GetAccount(context.Background(), account.ID)
 	require.Error(t, err)
 	require.Empty(t, accountz)
 
@@ -73,7 +73,7 @@ func TestListAccount(t *testing.T){
 		Limit: 5,
 		Offset: 0,
 	}
-	accounts, err := testQueries.ListAccount(context.Background(), args)
+	accounts, err := testBank.ListAccount(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, accounts)
 	require.NotZero(t, accounts)
@@ -86,7 +86,7 @@ func TestUpdateAccount(t *testing.T){
 		Balance: 500000,
 	}
 
-	account1, err := testQueries.UpdateAccount(context.Background(), args)
+	account1, err := testBank.UpdateAccount(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, account1)
 	require.Equal(t, account.ID, account1.ID)
@@ -99,7 +99,7 @@ func TestAddAccountBalance(t *testing.T){
 		ID: Account.ID,
 	}
 
-	account, err := testQueries.AddAccountBalance(context.Background(), args)
+	account, err := testBank.AddAccountBalance(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, account)
 	require.Equal(t, account.ID, account.ID)
@@ -108,7 +108,7 @@ func TestAddAccountBalance(t *testing.T){
 func TestGetAccountForUpdate(t *testing.T) {
 	account := createRandomAccount(t)
 
-	account2, err := testQueries.GetAccountForUpdate(context.Background(), account.ID)
+	account2, err := testBank.GetAccountForUpdate(context.Background(), account.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
 	require.Equal(t, account.ID, account2.ID)

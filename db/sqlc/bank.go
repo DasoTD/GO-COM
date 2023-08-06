@@ -2,8 +2,8 @@ package db
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
+	// "database/sql"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Bank interface{
@@ -17,35 +17,30 @@ type Bank interface{
 // Bank provides all functions to execute SQL queries and transactions
 type SQLBank struct {
 	*Queries
-	db *sql.DB
+	connPool *pgxpool.Pool
 	
 }
 
-func NewBank(db *sql.DB) Bank {
+func NewBank(connPool *pgxpool.Pool) Bank {
 	return &SQLBank{
-		db:      db,
-		Queries: New(db),
+		connPool:      connPool,
+		Queries: New(connPool),
 	}
 }
 
-// ExecTx executes a function within a database transaction
-func (bank *SQLBank) execTx(ctx context.Context, fn func(*Queries) error) error {
-	tx, err := bank.db.BeginTx(ctx, nil)
-	if err != nil {
-		return err
-	}
+// type SQLStore struct {
+// 	connPool *pgxpool.Pool
+// 	*Queries
+// }
 
-	q := New(tx)
-	err = fn(q)
-	if err != nil {
-		if rbErr := tx.Rollback(); rbErr != nil {
-			return fmt.Errorf("tx err: %v, rb err: %v", err, rbErr)
-		}
-		return err
-	}
+// // NewStore creates a new store
+// func NewStore(connPool *pgxpool.Pool) Store {
+// 	return &SQLStore{
+// 		connPool: connPool,
+// 		Queries:  New(connPool),
+// 	}
+// }
 
-	return tx.Commit()
-}
 
 
 // func (bank *Bank) TransferTx(ctx context.Context, arg TransferTxParams)

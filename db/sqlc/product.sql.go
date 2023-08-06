@@ -27,7 +27,7 @@ type CreateproductParams struct {
 }
 
 func (q *Queries) Createproduct(ctx context.Context, arg CreateproductParams) (Product, error) {
-	row := q.db.QueryRowContext(ctx, createproduct, arg.Name, arg.Description, arg.Price)
+	row := q.db.QueryRow(ctx, createproduct, arg.Name, arg.Description, arg.Price)
 	var i Product
 	err := row.Scan(&i.Name, &i.Description, &i.Price)
 	return i, err

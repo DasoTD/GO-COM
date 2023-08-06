@@ -15,7 +15,7 @@ func TestCreateCart(t *testing.T){
 		Quantity: 12,
 	}
 
-	cart, err := testQueries.CreateCart(context.Background(), args)
+	cart, err := testBank.CreateCart(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, cart)
 

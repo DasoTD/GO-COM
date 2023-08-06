@@ -26,7 +26,7 @@ type CreateCartParams struct {
 }
 
 func (q *Queries) CreateCart(ctx context.Context, arg CreateCartParams) (Cart, error) {
-	row := q.db.QueryRowContext(ctx, createCart, arg.Owner, arg.Product, arg.Quantity)
+	row := q.db.QueryRow(ctx, createCart, arg.Owner, arg.Product, arg.Quantity)
 	var i Cart
 	err := row.Scan(&i.Owner, &i.Product, &i.Quantity)
 	return i, err

@@ -15,7 +15,7 @@ func TestCreateProduct(t *testing.T){
 		Description: "Salad",
 
 	}
-	product, err := testQueries.Createproduct(context.Background(), args)
+	product, err := testBank.Createproduct(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, product)
 }

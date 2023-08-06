@@ -42,6 +42,15 @@ func (store *SQLBank) TransferTx(ctx context.Context, arg TransferTxParams) (Tra
 		if err != nil {
 			return err
 		}
+		// _, err = q.GetAccountForUpdate(context.Background(), arg.FromAccountID)
+		// if err != nil {
+		// 	return err
+		// }
+
+		// _, err = q.GetAccountForUpdate(context.Background(), arg.ToAccountID)
+		// if err != nil {
+		// 	return err
+		// }
 
 		result.ToEntry, err = q.CreateEntry(ctx, CreateEntryParams{
 			AccountID: arg.ToAccountID,

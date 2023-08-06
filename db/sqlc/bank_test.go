@@ -9,7 +9,6 @@ import (
 )
 
 func TestTransfertx(t *testing.T){
-	bank := NewBank(testDB)
 	account1 := createRandomAccount(t)
 		account2 := createRandomAccount(t)
 		fmt.Println(">> before:", account1.Balance, account2.Balance)
@@ -23,7 +22,7 @@ func TestTransfertx(t *testing.T){
 		// run n concurrent transfer transaction
 		for i := 0; i < n; i++ {
 			go func() {
-				result, err := bank.TransferTx(context.Background(), TransferTxParams{
+				result, err := testBank.TransferTx(context.Background(), TransferTxParams{
 					FromAccountID: account1.ID,
 					ToAccountID:   account2.ID,
 					Amount:        amount,
@@ -53,7 +52,7 @@ func TestTransfertx(t *testing.T){
 			require.NotZero(t, transfer.ID)
 			require.NotZero(t, transfer.CreatedAt)
 	
-			_, err = bank.GetTransfer(context.Background(), transfer.ID)
+			_, err = testBank.GetTransfer(context.Background(), transfer.ID)
 			require.NoError(t, err)
 	
 			// check entries
@@ -64,7 +63,7 @@ func TestTransfertx(t *testing.T){
 			require.NotZero(t, fromEntry.ID)
 			require.NotZero(t, fromEntry.CreatedAt)
 	
-			_, err = bank.GetEntry(context.Background(), fromEntry.ID)
+			_, err = testBank.GetEntry(context.Background(), fromEntry.ID)
 			require.NoError(t, err)
 	
 			toEntry := result.ToEntry
@@ -74,7 +73,7 @@ func TestTransfertx(t *testing.T){
 			require.NotZero(t, toEntry.ID)
 			require.NotZero(t, toEntry.CreatedAt)
 	
-			_, err = bank.GetEntry(context.Background(), toEntry.ID)
+			_, err = testBank.GetEntry(context.Background(), toEntry.ID)
 			require.NoError(t, err)
 	
 			// check accounts
@@ -102,10 +101,10 @@ func TestTransfertx(t *testing.T){
 	}
 
 	// check the final updated balance
-	updatedAccount1, err := bank.GetAccount(context.Background(), account1.ID)
+	updatedAccount1, err := testBank.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 
-	updatedAccount2, err := bank.GetAccount(context.Background(), account2.ID)
+	updatedAccount2, err := testBank.GetAccount(context.Background(), account2.ID)
 	require.NoError(t, err)
 
 	fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
