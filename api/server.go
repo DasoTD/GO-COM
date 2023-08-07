@@ -23,7 +23,7 @@ func NewServer( bank db.Bank) *Server {
 	}
 
 	router.POST("/account", server.createAccount)
-
+	router.GET("account/:id", server.getAccount)
 	
 
 	server.router = router
