@@ -6,22 +6,22 @@ import (
 	"log"
 	"os"
 	"testing"
+
+	"github.com/dasotd/Ecom/util"
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 )
 
 var testBank Bank
-// var testDB *sql.DB
-const (
-	DB_DRIVER="postgres"
-	DB_SOURCE="postgresql://root:secret@localhost:5432/Ecom?sslmode=disable"
-	
-)
+
 
 
 func TestMain(m *testing.M) {
-	// var err error
-	connPool, err := pgxpool.New(context.Background(), DB_SOURCE)
+	config, err := util.LoadConfig("../..")
+	if err != nil {
+		log.Fatal("cannot load environment variable", err)
+	}
+	connPool, err := pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
