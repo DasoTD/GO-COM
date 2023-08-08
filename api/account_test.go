@@ -17,10 +17,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func randomAccount() db.Account{
+func randomAccount(owner string) db.Account{
 	return db.Account{
 		ID: util.RandomInt(1,1000),
-		Owner: util.RandomOwner(),
+		Owner: owner,
 		Balance: util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 		CreatedAt: time.Now(),
@@ -28,7 +28,8 @@ func randomAccount() db.Account{
 }
 
 func TestGetAccount(t *testing.T) {
-	account := randomAccount()
+	user, _ := randomUser(t)
+	account := randomAccount(user.Username)
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 

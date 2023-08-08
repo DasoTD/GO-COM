@@ -2,14 +2,17 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	db "github.com/dasotd/Ecom/db/sqlc"
+	"github.com/dasotd/Ecom/token"
+
 	// "github.com/dasotd/Ecom/util"
 	"github.com/gin-gonic/gin"
 )
 type createAccountRequest struct {
-	Owner string `json:"owner" binding:"required"`
+	// Owner string `json:"owner" binding:"required"`
 	Currency string `json:"currency" binding:"required,currency"` //oneof=GBP EUR USD CAD
 }
 
@@ -20,8 +23,9 @@ func (server *Server) createAccount( ctx *gin.Context){
 		return
 	}
 
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
-		Owner: req.Owner,
+		Owner: authPayload.Username,
 		Balance: 5000000,
 		Currency: req.Currency,
 	}
@@ -48,6 +52,13 @@ func (server *Server) getAccount(ctx *gin.Context){
 	account, err := server.bank.GetAccount(ctx, req.ID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if account.Owner != authPayload.Username {
+		err := errors.New("account doesn't belong to the authenticated user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
 	}
 	ctx.JSON(http.StatusOK, account)
 
