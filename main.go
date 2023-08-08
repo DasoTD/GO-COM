@@ -23,7 +23,10 @@ func main(){
 	}
 
 	bank := db.NewBank(connPool)
-	server :=api.NewServer(bank)
+	server, err :=api.NewServer(config, bank)
+	if err != nil {
+		log.Fatal("cannot create sever:", err)
+	}
 	err = server.Start(config.HTTPServerAddress)
 	if err != nil {
 		log.Fatal("cannot start sever:", err)

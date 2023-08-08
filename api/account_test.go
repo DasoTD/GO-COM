@@ -38,7 +38,7 @@ func TestGetAccount(t *testing.T) {
 		Times(1).
 		Return(account, nil).AnyTimes()
 	
-	server := NewServer(bank)
+	server := newTestServer(t,bank)
 	recorder := httptest.NewRecorder()
 
 	url := fmt.Sprintf("/accounts/%d", account.ID)
