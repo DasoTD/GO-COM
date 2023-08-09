@@ -36,6 +36,7 @@ func NewServer(config util.Config, bank db.Bank) (*Server, error) {
 
 	router.POST("/user", server.createUser)
 	router.POST("/user/login", server.loginUser)
+	router.POST("/token/renew_access", server.renewAccessToken)
 
 	// router := router.Group("/").Use(authMiddleware(server.tokenMaker))
 	router.POST("/account", server.createAccount)
@@ -61,6 +62,7 @@ func (server *Server) setupRouter(){
 
 	router.POST("/user", server.createUser)
 	router.POST("/user/login", server.loginUser)
+	router.POST("/token/renew_access", server.renewAccessToken)
 
 	// router := router.Group("/").Use(authMiddleware(server.tokenMaker))
 	router.POST("/account", server.createAccount)
