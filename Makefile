@@ -40,4 +40,11 @@ db_schema:
 mockdb:
 	mockgen --build_flags=--mod=mod -package mockdb -destination db/mock/bank.go github.com/dasotd/Ecom/db/sqlc Bank
 
-.PHONY: db_docs db_schema sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
+proto:
+	rm -f pb/*.go
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
+	--go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+	--grpc-gateway_out=pb --grpc-gateway_opt=paths=source_relative \
+	proto/*.proto
+
+.PHONY: proto db_docs db_schema sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
