@@ -1,8 +1,9 @@
+DB_URL = postgresql://root:secret@localhost:5432/Ecom?sslmode=disable
 sqlc:
 	sqlc generate
 
 migrateup:
-	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/Ecom?sslmode=disable" -verbose up
+	migrate -path db/migration -database "$(DB_URL)" -verbose up
 
 migratedown:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/Ecom?sslmode=disable" -verbose down
@@ -30,7 +31,13 @@ test:
 server:
 	go run main.go
 
+db_docs:
+	dbdocs build doc/db.dbml
+
+db_schema:
+	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+
 mockdb:
 	mockgen --build_flags=--mod=mod -package mockdb -destination db/mock/bank.go github.com/dasotd/Ecom/db/sqlc Bank
 
-.PHONY: sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
+.PHONY: db_docs db_schema sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
