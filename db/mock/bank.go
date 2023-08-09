@@ -10,12 +10,23 @@ import (
 
 	sqlc "github.com/dasotd/Ecom/db/sqlc"
 	gomock "github.com/golang/mock/gomock"
+	"github.com/google/uuid"
 )
 
 // MockBank is a mock of Bank interface.
 type MockBank struct {
 	ctrl     *gomock.Controller
 	recorder *MockBankMockRecorder
+}
+
+// CreateSession implements db.Bank.
+func (*MockBank) CreateSession(ctx context.Context, arg sqlc.CreateSessionParams) (sqlc.Session, error) {
+	panic("unimplemented")
+}
+
+// GetSession implements db.Bank.
+func (*MockBank) GetSession(ctx context.Context, id uuid.UUID) (sqlc.Session, error) {
+	panic("unimplemented")
 }
 
 // MockBankMockRecorder is the mock recorder for MockBank.
