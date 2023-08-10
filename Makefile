@@ -47,4 +47,7 @@ proto:
 	--grpc-gateway_out=pb --grpc-gateway_opt=paths=source_relative \
 	proto/*.proto
 
-.PHONY: proto db_docs db_schema sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
+evans:
+	evans --host localhost --port 9090 -r repl
+
+.PHONY: evans proto db_docs db_schema sqlc migrateup migratedown migrateup1 migratedown1 createdb dropdb test migration server mockdb installPG
